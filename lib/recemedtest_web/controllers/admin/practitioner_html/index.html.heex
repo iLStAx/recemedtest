@@ -8,9 +8,9 @@
     </:actions>
   </.header>
 
-  <.table id="practitioners" rows={@practitioners} row_click={&JS.navigate(~p"/admin/practitioners/#{&1}")}>
-    <:col :let={practitioner} label="First name">{practitioner.first_name}</:col>
-    <:col :let={practitioner} label="Last name">{practitioner.last_name}</:col>
+  <Flop.Phoenix.table id="practitioners" items={@practitioners} meta={@meta} path={~p"/admin/practitioners"} row_click={&JS.navigate(~p"/admin/practitioners/#{&1}")}>
+    <:col :let={practitioner} label="First name" field={:first_name}>{practitioner.first_name}</:col>
+    <:col :let={practitioner} label="Last name" field={:last_name}>{practitioner.last_name}</:col>
     <:col :let={practitioner} label="Phone">{practitioner.phone}</:col>
     <:col :let={practitioner} label="Birthdate">{practitioner.birthdate}</:col>
     <:col :let={practitioner} label="Email">{practitioner.email}</:col>
@@ -25,5 +25,7 @@
         Delete
       </.link>
     </:action>
-  </.table>
+  </Flop.Phoenix.table>
+
+<Flop.Phoenix.pagination meta={@meta} path={~p"/admin/practitioners"} />
 </Layouts.app>

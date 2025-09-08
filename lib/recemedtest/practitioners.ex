@@ -80,8 +80,8 @@ defmodule Recemedtest.Practitioners do
       [%Practitioner{}, ...]
 
   """
-  def list_practitioners do
-    Repo.all(Practitioner)
+  def list_practitioners(params) do
+    Flop.validate_and_run!(Practitioner, params, for: Practitioner, replace_invalid_params: true)
   end
 
   @doc """

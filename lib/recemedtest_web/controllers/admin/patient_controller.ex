@@ -4,9 +4,9 @@ defmodule RecemedtestWeb.Admin.PatientController do
   alias Recemedtest.Patients
   alias Recemedtest.Patients.Patient
 
-  def index(conn, _params) do
-    patients = Patients.list_patients()
-    render(conn, :index, patients: patients)
+  def index(conn, params) do
+    { patients, meta } = Patients.list_patients(params)
+    render(conn, :index, patients: patients, meta: meta)
   end
 
   def new(conn, _params) do

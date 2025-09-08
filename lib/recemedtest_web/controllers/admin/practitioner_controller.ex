@@ -4,9 +4,9 @@ defmodule RecemedtestWeb.Admin.PractitionerController do
   alias Recemedtest.Practitioners
   alias Recemedtest.Practitioners.Practitioner
 
-  def index(conn, _params) do
-    practitioners = Practitioners.list_practitioners()
-    render(conn, :index, practitioners: practitioners)
+  def index(conn, params) do
+    { practitioners, meta } = Practitioners.list_practitioners(params)
+    render(conn, :index, practitioners: practitioners, meta: meta)
   end
 
   def new(conn, _params) do
