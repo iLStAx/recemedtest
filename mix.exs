@@ -67,7 +67,9 @@ defmodule Recemedtest.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:httpoison, "~> 2.0"},
-      {:faker, "~> 0.18", only: [:dev, :test]}
+      {:faker, "~> 0.18", only: [:dev, :test]},
+      {:flop, "~> 0.26.3"},
+      {:flop_phoenix, "~> 0.25.3"}
     ]
   end
 
