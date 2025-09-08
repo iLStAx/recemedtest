@@ -8,6 +8,14 @@
     </:actions>
   </.header>
 
+  <.form for={Phoenix.Component.to_form(@meta)} action={~p"/admin/practitioners"} method="get">
+    <Flop.Phoenix.filter_fields :let={i} form={Phoenix.Component.to_form(@meta)} fields={[:first_name, :last_name]}>
+
+      <.input field={i.field} label={i.label} placeholder={"Buscar por #{i.label}"} />
+    </Flop.Phoenix.filter_fields>
+    <button type="submit">Filtrar</button>
+  </.form>
+
   <Flop.Phoenix.table id="practitioners" items={@practitioners} meta={@meta} path={~p"/admin/practitioners"} row_click={&JS.navigate(~p"/admin/practitioners/#{&1}")}>
     <:col :let={practitioner} label="First name" field={:first_name}>{practitioner.first_name}</:col>
     <:col :let={practitioner} label="Last name" field={:last_name}>{practitioner.last_name}</:col>
