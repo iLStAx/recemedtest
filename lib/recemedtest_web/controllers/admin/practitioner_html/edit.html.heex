@@ -1,0 +1,8 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Edit Practitioner {@practitioner.id}
+    <:subtitle>Use this form to manage practitioner records in your database.</:subtitle>
+  </.header>
+
+  <.practitioner_form changeset={@changeset} action={~p"/admin/practitioners/#{@practitioner}"} return_to={~p"/admin/practitioners"} />
+</Layouts.app>

@@ -1,0 +1,18 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Prescription {@prescription.id}
+    <:subtitle>This is a prescription record from your database.</:subtitle>
+    <:actions>
+      <.button navigate={~p"/admin/prescriptions"}>
+        <.icon name="hero-arrow-left" />
+      </.button>
+      <.button variant="primary" navigate={~p"/admin/prescriptions/#{@prescription}/edit?return_to=show"}>
+        <.icon name="hero-pencil-square" /> Edit prescription
+      </.button>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="Detail">{@prescription.detail}</:item>
+  </.list>
+</Layouts.app>

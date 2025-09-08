@@ -1,0 +1,29 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Listing Patients
+    <:actions>
+      <.button href={~p"/admin/patients/new"}>
+        <.icon name="hero-plus" /> New Patient
+      </.button>
+    </:actions>
+  </.header>
+
+  <.table id="patients" rows={@patients} row_click={&JS.navigate(~p"/admin/patients/#{&1}")}>
+    <:col :let={patient} label="First name">{patient.first_name}</:col>
+    <:col :let={patient} label="Last name">{patient.last_name}</:col>
+    <:col :let={patient} label="Phone">{patient.phone}</:col>
+    <:col :let={patient} label="Birthdate">{patient.birthdate}</:col>
+    <:col :let={patient} label="Email">{patient.email}</:col>
+    <:action :let={patient}>
+      <div class="sr-only">
+        <.link navigate={~p"/admin/patients/#{patient}"}>Show</.link>
+      </div>
+      <.link navigate={~p"/admin/patients/#{patient}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={patient}>
+      <.link href={~p"/admin/patients/#{patient}"} method="delete" data-confirm="Are you sure?">
+        Delete
+      </.link>
+    </:action>
+  </.table>
+</Layouts.app>

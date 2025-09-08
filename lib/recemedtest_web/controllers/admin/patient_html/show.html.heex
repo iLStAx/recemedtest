@@ -1,0 +1,22 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Patient {@patient.id}
+    <:subtitle>This is a patient record from your database.</:subtitle>
+    <:actions>
+      <.button navigate={~p"/admin/patients"}>
+        <.icon name="hero-arrow-left" />
+      </.button>
+      <.button variant="primary" navigate={~p"/admin/patients/#{@patient}/edit?return_to=show"}>
+        <.icon name="hero-pencil-square" /> Edit patient
+      </.button>
+    </:actions>
+  </.header>
+
+  <.list>
+    <:item title="First name">{@patient.first_name}</:item>
+    <:item title="Last name">{@patient.last_name}</:item>
+    <:item title="Phone">{@patient.phone}</:item>
+    <:item title="Birthdate">{@patient.birthdate}</:item>
+    <:item title="Email">{@patient.email}</:item>
+  </.list>
+</Layouts.app>

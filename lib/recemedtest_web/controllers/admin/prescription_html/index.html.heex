@@ -1,0 +1,16 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Listing Prescriptions
+  </.header>
+
+  <.table id="prescriptions" rows={@prescriptions} row_click={&JS.navigate(~p"/admin/prescriptions/#{&1}")}>
+    <:col :let={prescription} label="Detail">{prescription.detail}</:col>
+    <:col :let={prescription} label="Practitioner">{prescription.practitioner |> Recemedtest.Practitioners.Practitioner.full_name()}</:col>
+    <:col :let={prescription} label="Patient">{prescription.patient |> Recemedtest.Patients.Patient.full_name()}</:col>
+    <:action :let={prescription}>
+      <div class="sr-only">
+        <.link navigate={~p"/admin/prescriptions/#{prescription}"}>Show</.link>
+      </div>
+    </:action>
+  </.table>
+</Layouts.app>

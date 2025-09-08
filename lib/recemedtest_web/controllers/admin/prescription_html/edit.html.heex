@@ -1,0 +1,8 @@
+<Layouts.app flash={@flash}>
+  <.header>
+    Edit Prescription {@prescription.id}
+    <:subtitle>Use this form to manage prescription records in your database.</:subtitle>
+  </.header>
+
+  <.prescription_form changeset={@changeset} action={~p"/admin/prescriptions/#{@prescription}"} return_to={~p"/admin/prescriptions"} />
+</Layouts.app>
