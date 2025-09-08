@@ -45,18 +45,16 @@ defmodule RecemedtestWeb.Layouts do
       <div class="flex-none">
         <ul class="flex flex-column px-1 space-x-4 items-center">
           <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
+            <a href="http://localhost:4000/admin/practitioners" class="btn btn-ghost">Practitioners</a>
           </li>
           <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
+            <a href="http://localhost:4000/admin/patients" class="btn btn-ghost">Patients</a>
+          </li>
+          <li>
+            <a href="http://localhost:4000/admin/prescriptions" class="btn btn-ghost">Prescriptions</a>
           </li>
           <li>
             <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
           </li>
         </ul>
       </div>
