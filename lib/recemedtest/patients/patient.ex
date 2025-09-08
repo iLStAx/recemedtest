@@ -2,6 +2,12 @@ defmodule Recemedtest.Patients.Patient do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {
+    Flop.Schema,
+    filterable: [:first_name, :last_name],
+    sortable: [:first_name, :last_name]
+  }
+
   schema "patients" do
     field :first_name, :string
     field :last_name, :string
@@ -18,7 +24,7 @@ defmodule Recemedtest.Patients.Patient do
 
   ## Example
 
-    Marco Salinas
+  Marco Salinas
   """
   def full_name(patient) do
     "#{patient.first_name} #{patient.last_name}"

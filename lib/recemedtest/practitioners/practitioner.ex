@@ -1,7 +1,12 @@
 defmodule Recemedtest.Practitioners.Practitioner do
-  alias Recemedtest.Practitioners.Practitioner
   use Ecto.Schema
   import Ecto.Changeset
+
+  @derive {
+    Flop.Schema,
+    filterable: [:first_name, :last_name],
+    sortable: [:first_name, :last_name]
+  }
 
   schema "practitioners" do
     field :first_name, :string
