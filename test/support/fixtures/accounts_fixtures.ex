@@ -1,9 +1,4 @@
 defmodule Recemedtest.AccountsFixtures do
-  @moduledoc """
-  This module defines test helpers for creating
-  entities via the `Recemedtest.Accounts` context.
-  """
-
   import Ecto.Query
 
   alias Recemedtest.Accounts

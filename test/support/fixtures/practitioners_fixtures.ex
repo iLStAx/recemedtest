@@ -12,10 +12,10 @@ defmodule Recemedtest.PractitionersFixtures do
       attrs
       |> Enum.into(%{
         birthdate: ~D[2025-09-07],
-        email: "some email",
-        first_name: "some first_name",
-        last_name: "some last_name",
-        phone: "some phone"
+        email: Faker.Internet.email,
+        first_name: Faker.Person.first_name,
+        last_name: Faker.Person.last_name,
+        phone: Faker.Phone.EnUs.phone
       })
       |> Recemedtest.Practitioners.create_practitioner()
 
