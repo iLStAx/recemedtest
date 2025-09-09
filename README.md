@@ -17,6 +17,11 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * Forum: https://elixirforum.com/c/phoenix-forum
 * Source: https://github.com/phoenixframework/phoenix
 
+## Instalación en macOS
+
+* Elixir y Erlang: brew install elixir
+* Phoenix: mix archive.install hex phx_new
+
 
 ## Generadores utilizados
 
@@ -26,3 +31,14 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
     * mix phx.gen.html Practitioner practitioners first_name:string last_name:string phone:string birthdate:date email:string --web admin
 * Recetas
     * mix phx.gen.html Prescription prescriptions detail:text practitioner_id:references:practitioners patient_id:references:patients --web admin
+
+## Creación de Usuario
+
+Ejecutar en consola `iex -S mix` lo siguiente para crear el usuario
+```
+Accounts.register_user(%{
+    email: "admin@recemed.com",
+    password: "123456789012",
+    password_confirmation: "123456789012"
+})
+```
