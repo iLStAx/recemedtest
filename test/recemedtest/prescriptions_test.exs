@@ -21,7 +21,9 @@ defmodule Recemedtest.PrescriptionsTest do
     end
 
     test "create_prescription/1 with valid data creates a prescription" do
-      valid_attrs = %{detail: "some detail"}
+      patient = Recemedtest.PatientsFixtures.patient_fixture()
+      practitioner = Recemedtest.PractitionersFixtures.practitioner_fixture()
+      valid_attrs = %{detail: "some detail", patient_id: patient.id, practitioner_id: practitioner.id}
 
       assert {:ok, %Prescription{} = prescription} = Prescriptions.create_prescription(valid_attrs)
       assert prescription.detail == "some detail"
