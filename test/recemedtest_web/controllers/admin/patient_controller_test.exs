@@ -2,13 +2,22 @@ defmodule RecemedtestWeb.Admin.PatientControllerTest do
   use RecemedtestWeb.ConnCase
 
   import Recemedtest.PatientsFixtures
+  import Recemedtest.AccountsFixtures
 
   @create_attrs %{first_name: "some first_name", last_name: "some last_name", phone: "some phone", birthdate: ~D[2025-09-07], email: "some email"}
   @update_attrs %{first_name: "some updated first_name", last_name: "some updated last_name", phone: "some updated phone", birthdate: ~D[2025-09-08], email: "some updated email"}
   @invalid_attrs %{first_name: nil, last_name: nil, phone: nil, birthdate: nil, email: nil}
 
+  setup %{conn: conn} do
+    user = user_fixture()
+    conn = log_in_user(conn, user)
+    {:ok, conn: conn, user: user}
+  end
+
   describe "index" do
     test "lists all patients", %{conn: conn} do
+      user = user_fixture()  # tu fixture de usuario
+      conn = log_in_user(conn, user)
       conn = get(conn, ~p"/admin/patients")
       assert html_response(conn, 200) =~ "Listing Patients"
     end
