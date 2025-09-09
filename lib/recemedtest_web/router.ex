@@ -31,6 +31,14 @@ defmodule RecemedtestWeb.Router do
     resources "/prescriptions", PrescriptionController, only: [:index, :show]
   end
 
+  scope "/api", RecemedtestWeb.Api do
+    pipe_through :api
+
+    resources "/patients", PatientController, except: [:new, :edit]
+    resources "/practitioners", PractitionerController, except: [:new, :edit]
+    resources "/prescriptions", PrescriptionController, except: [:new, :edit]
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", RecemedtestWeb do
   #   pipe_through :api

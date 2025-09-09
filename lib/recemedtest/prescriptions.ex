@@ -13,7 +13,7 @@ defmodule Recemedtest.Prescriptions do
   Create random prescriptions from the las 100
   patients and practitioners already created by
   the faker api
-  
+
   Returns an array of Prescriptions
   """
   def loader do
@@ -74,7 +74,9 @@ defmodule Recemedtest.Prescriptions do
       ** (Ecto.NoResultsError)
 
   """
-  def get_prescription!(id), do: Repo.get!(Prescription, id)
+  def get_prescription!(id) do
+    Repo.get!(Prescription, id) |> Repo.preload([:patient, :practitioner])
+  end
 
   @doc """
   Creates a prescription.

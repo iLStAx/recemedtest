@@ -1,0 +1,29 @@
+<Layouts.app flash={@flash} current_scope={@current_scope}>
+  <.header>
+    Listing Practitioners
+    <:actions>
+      <.button href={~p"/api/practitioners/new"}>
+        <.icon name="hero-plus" /> New Practitioner
+      </.button>
+    </:actions>
+  </.header>
+
+  <.table id="practitioners" rows={@practitioners} row_click={&JS.navigate(~p"/api/practitioners/#{&1}")}>
+    <:col :let={practitioner} label="First name">{practitioner.first_name}</:col>
+    <:col :let={practitioner} label="Last name">{practitioner.last_name}</:col>
+    <:col :let={practitioner} label="Phone">{practitioner.phone}</:col>
+    <:col :let={practitioner} label="Birthdate">{practitioner.birthdate}</:col>
+    <:col :let={practitioner} label="Email">{practitioner.email}</:col>
+    <:action :let={practitioner}>
+      <div class="sr-only">
+        <.link navigate={~p"/api/practitioners/#{practitioner}"}>Show</.link>
+      </div>
+      <.link navigate={~p"/api/practitioners/#{practitioner}/edit"}>Edit</.link>
+    </:action>
+    <:action :let={practitioner}>
+      <.link href={~p"/api/practitioners/#{practitioner}"} method="delete" data-confirm="Are you sure?">
+        Delete
+      </.link>
+    </:action>
+  </.table>
+</Layouts.app>
