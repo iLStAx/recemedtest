@@ -13,7 +13,7 @@ defmodule Recemedtest.Prescriptions.Prescription do
   @doc false
   def changeset(prescription, attrs) do
     prescription
-    |> cast(attrs, [:detail])
-    |> validate_required([:detail])
+    |> cast(attrs, [:detail, :patient_id, :practitioner_id])
+    |> validate_required([:detail, :patient_id, :practitioner_id])
   end
 end
