@@ -42,22 +42,6 @@ defmodule RecemedtestWeb.Layouts do
           <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
         </a>
       </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="http://localhost:4000/admin/practitioners" class="btn btn-ghost">Practitioners</a>
-          </li>
-          <li>
-            <a href="http://localhost:4000/admin/patients" class="btn btn-ghost">Patients</a>
-          </li>
-          <li>
-            <a href="http://localhost:4000/admin/prescriptions" class="btn btn-ghost">Prescriptions</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-        </ul>
-      </div>
     </header>
 
     <main class="px-4 py-20 sm:px-6 lg:px-8">
