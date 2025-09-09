@@ -1,8 +1,10 @@
 defmodule RecemedtestWeb.Api.PractitionerController do
   use RecemedtestWeb, :controller
 
-  alias Recemedtest.Practitioners
   alias Recemedtest.Practitioners.Practitioner
+  alias Recemedtest.Practitioners
+
+  action_fallback RecemedtestWeb.FallbackController
 
   def index(conn, params) do
     practitioners = Practitioners.list_practitioners(params)
@@ -10,42 +12,42 @@ defmodule RecemedtestWeb.Api.PractitionerController do
   end
 
   def create(conn, %{"practitioner" => practitioner_params}) do
-    case Practitioners.create_practitioner(practitioner_params) do
-      {:ok, practitioner} ->
-        conn
-        |> put_flash(:info, "Practitioner created successfully.")
-        |> redirect(to: ~p"/api/practitioners/#{practitioner}")
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+    with {:ok, %Practitioner{} = practitioner} <- Practitioners.create_practitioner(practitioner_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", ~p"/api/practitioners/#{practitioner}")
+      |> render(:show, practitioner: practitioner)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    practitioner = Practitioners.get_practitioner!(id)
-    render(conn, :show, practitioner: practitioner)
+    try do
+      practitioner = Practitioners.get_practitioner!(id)
+      render(conn, :show, practitioner: practitioner)
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def update(conn, %{"id" => id, "practitioner" => practitioner_params}) do
     practitioner = Practitioners.get_practitioner!(id)
 
-    case Practitioners.update_practitioner(practitioner, practitioner_params) do
-      {:ok, practitioner} ->
-        conn
-        |> put_flash(:info, "Practitioner updated successfully.")
-        |> redirect(to: ~p"/api/practitioners/#{practitioner}")
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, practitioner: practitioner, changeset: changeset)
+    with {:ok, %Practitioner{} = practitioner} <- Practitioners.update_practitioner(practitioner, practitioner_params) do
+      render(conn, :show, practitioner: practitioner)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    practitioner = Practitioners.get_practitioner!(id)
-    {:ok, _practitioner} = Practitioners.delete_practitioner(practitioner)
+    try do
+      practitioner = Practitioners.get_practitioner!(id)
 
-    conn
-    |> put_flash(:info, "Practitioner deleted successfully.")
-    |> redirect(to: ~p"/api/practitioners")
+      with {:ok, %Practitioner{}} <-Practitioners.delete_practitioner(practitioner) do
+        send_resp(conn, :no_content, "")
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 end

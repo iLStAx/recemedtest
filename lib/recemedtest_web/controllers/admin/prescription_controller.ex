@@ -5,6 +5,8 @@ defmodule RecemedtestWeb.Admin.PrescriptionController do
   alias Recemedtest.Prescriptions.Prescription
   alias Recemedtest.Practitioners.Practitioner
 
+  action_fallback RecemedtestWeb.FallbackController
+
   def index(conn, _params) do
     prescriptions = Prescriptions.list_prescriptions()
     render(conn, :index, prescriptions: prescriptions)
@@ -28,36 +30,56 @@ defmodule RecemedtestWeb.Admin.PrescriptionController do
   end
 
   def show(conn, %{"id" => id}) do
-    prescription = Prescriptions.get_prescription!(id)
-    render(conn, :show, prescription: prescription)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
+      render(conn, :show, prescription: prescription)
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def edit(conn, %{"id" => id}) do
-    prescription = Prescriptions.get_prescription!(id)
-    changeset = Prescriptions.change_prescription(prescription)
-    render(conn, :edit, prescription: prescription, changeset: changeset)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
+      changeset = Prescriptions.change_prescription(prescription)
+      render(conn, :edit, prescription: prescription, changeset: changeset)
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def update(conn, %{"id" => id, "prescription" => prescription_params}) do
-    prescription = Prescriptions.get_prescription!(id)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
 
-    case Prescriptions.update_prescription(prescription, prescription_params) do
-      {:ok, prescription} ->
-        conn
-        |> put_flash(:info, "Prescription updated successfully.")
-        |> redirect(to: ~p"/admin/prescriptions/#{prescription}")
+      case Prescriptions.update_prescription(prescription, prescription_params) do
+        {:ok, prescription} ->
+          conn
+          |> put_flash(:info, "Prescription updated successfully.")
+          |> redirect(to: ~p"/admin/prescriptions/#{prescription}")
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, prescription: prescription, changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, :edit, prescription: prescription, changeset: changeset)
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    prescription = Prescriptions.get_prescription!(id)
-    {:ok, _prescription} = Prescriptions.delete_prescription(prescription)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
+      {:ok, _prescription} = Prescriptions.delete_prescription(prescription)
 
-    conn
-    |> put_flash(:info, "Prescription deleted successfully.")
-    |> redirect(to: ~p"/admin/prescriptions")
+      conn
+      |> put_flash(:info, "Prescription deleted successfully.")
+      |> redirect(to: ~p"/admin/prescriptions")
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 end

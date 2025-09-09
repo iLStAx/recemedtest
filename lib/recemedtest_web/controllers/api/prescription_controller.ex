@@ -3,6 +3,9 @@ defmodule RecemedtestWeb.Api.PrescriptionController do
 
   alias Recemedtest.Prescriptions
   alias Recemedtest.Prescriptions.Prescription
+  alias Recemedtest.Repo
+
+  action_fallback RecemedtestWeb.FallbackController
 
   def index(conn, _params) do
     prescriptions = Prescriptions.list_prescriptions()
@@ -10,42 +13,52 @@ defmodule RecemedtestWeb.Api.PrescriptionController do
   end
 
   def create(conn, %{"prescription" => prescription_params}) do
-    case Prescriptions.create_prescription(prescription_params) do
-      {:ok, prescription} ->
-        conn
-        |> put_flash(:info, "Prescription created successfully.")
-        |> redirect(to: ~p"/api/prescriptions/#{prescription}")
+    with {:ok, %Prescription{} = prescription} <- Prescriptions.create_prescription(prescription_params) do
+      prescription = Repo.preload(prescription, [:patient, :practitioner])
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :new, changeset: changeset)
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", ~p"/api/prescriptions/#{prescription}")
+      |> render(:show, prescription: prescription)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    prescription = Prescriptions.get_prescription!(id)
-    render(conn, :show, prescription: prescription)
+    try do
+      prescription =
+        Prescriptions.get_prescription!(id)
+        |> Repo.preload([:patient, :practitioner])
+      render(conn, :show, prescription: prescription)
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def update(conn, %{"id" => id, "prescription" => prescription_params}) do
-    prescription = Prescriptions.get_prescription!(id)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
 
-    case Prescriptions.update_prescription(prescription, prescription_params) do
-      {:ok, prescription} ->
-        conn
-        |> put_flash(:info, "Prescription updated successfully.")
-        |> redirect(to: ~p"/api/prescriptions/#{prescription}")
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, prescription: prescription, changeset: changeset)
+      with {:ok, %Prescription{} = prescription} <- Prescriptions.update_prescription(prescription, prescription_params) do
+        prescription = Repo.preload(prescription, [:patient, :practitioner])
+        render(conn, :show, prescription: prescription)
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    prescription = Prescriptions.get_prescription!(id)
-    {:ok, _prescription} = Prescriptions.delete_prescription(prescription)
+    try do
+      prescription = Prescriptions.get_prescription!(id)
 
-    conn
-    |> put_flash(:info, "Prescription deleted successfully.")
-    |> redirect(to: ~p"/api/prescriptions")
+      with {:ok, %Prescription{}} <- Prescriptions.delete_prescription(prescription) do
+        send_resp(conn, :no_content, "")
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 end

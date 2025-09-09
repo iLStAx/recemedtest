@@ -15,29 +15,44 @@ defmodule RecemedtestWeb.Api.PatientController do
     with {:ok, %Patient{} = patient} <- Patients.create_patient(patient_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/api/patients/#{patient}")
+      |> put_resp_header("location", ~p"/api/patients/#{patient}")
       |> render(:show, patient: patient)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    patient = Patients.get_patient!(id)
-    render(conn, :show, patient: patient)
+    try do
+      patient = Patients.get_patient!(id)
+      render(conn, :show, patient: patient)
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
+    end
   end
 
   def update(conn, %{"id" => id, "patient" => patient_params}) do
-    patient = Patients.get_patient!(id)
+    try do
+      patient = Patients.get_patient!(id)
 
-    with {:ok, %Patient{} = patient} <- Patients.update_patient(patient, patient_params) do
-      render(conn, :show, patient: patient)
+      with {:ok, %Patient{} = patient} <- Patients.update_patient(patient, patient_params) do
+        render(conn, :show, patient: patient)
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    patient = Patients.get_patient!(id)
+    try do
+      patient = Patients.get_patient!(id)
 
-    with {:ok, %Patient{}} <- Patients.delete_patient(patient) do
-      send_resp(conn, :no_content, "")
+      with {:ok, %Patient{}} <- Patients.delete_patient(patient) do
+        send_resp(conn, :no_content, "")
+      end
+    rescue
+      Ecto.NoResultsError ->
+        {:error, :not_found}
     end
   end
 end
