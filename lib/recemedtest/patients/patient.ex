@@ -1,6 +1,7 @@
 defmodule Recemedtest.Patients.Patient do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Recemedtest.Utils.DateParser
 
   @derive {
     Flop.Schema,
@@ -37,5 +38,6 @@ defmodule Recemedtest.Patients.Patient do
     |> validate_required([:first_name, :last_name, :phone, :birthdate, :email])
     |> validate_format(:email, ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
     |> unique_constraint(:email)
+    |> DateParser.parse_birthdate()
   end
 end
