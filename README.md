@@ -37,7 +37,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 Ejecutar en consola `iex -S mix` lo siguiente para crear el usuario
 ```
-Accounts.register_user(%{
+Accounts.register_user_available_to_login(%{
     email: "admin@recemed.com",
     password: "123456789012",
     password_confirmation: "123456789012"
