@@ -15,7 +15,7 @@ defmodule Recemedtest.Practitioners.Practitioner do
     field :phone, :string
     field :birthdate, :date
     field :email, :string
-    has_many :prescriptions, Recemedtest.Prescriptions.Prescription
+    has_many :prescriptions, Recemedtest.Prescriptions.Prescription, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
