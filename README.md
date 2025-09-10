@@ -27,7 +27,7 @@ en consola  `iex -S mix` ejecutar lo siguiente:
 
 Ejecutar en consola `iex -S mix` lo siguiente para crear el usuario
 ```
-Accounts.register_user_available_to_login(%{
+Recemedtest.Accounts.register_user_available_to_login(%{
     email: "admin@recemed.com",
     password: "123456789012",
     password_confirmation: "123456789012"
