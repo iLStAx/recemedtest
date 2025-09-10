@@ -7,9 +7,9 @@ defmodule RecemedtestWeb.Admin.PrescriptionController do
 
   action_fallback RecemedtestWeb.FallbackController
 
-  def index(conn, _params) do
-    prescriptions = Prescriptions.list_prescriptions()
-    render(conn, :index, prescriptions: prescriptions)
+  def index(conn, params) do
+    { prescriptions, meta } = Prescriptions.list_prescriptions(params)
+    render(conn, :index, prescriptions: prescriptions, meta: meta)
   end
 
   def new(conn, _params) do

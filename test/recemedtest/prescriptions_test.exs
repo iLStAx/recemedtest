@@ -12,7 +12,8 @@ defmodule Recemedtest.PrescriptionsTest do
 
     test "list_prescriptions/0 returns all prescriptions" do
       prescription = prescription_fixture()
-      assert Prescriptions.list_prescriptions() == [prescription]
+      { prescriptions, _meta } = Prescriptions.list_prescriptions()
+      assert prescriptions == [prescription]
     end
 
     test "get_prescription!/1 returns the prescription with given id" do

@@ -3,14 +3,61 @@
     Listing Prescriptions
   </.header>
 
-  <.table id="prescriptions" rows={@prescriptions} row_click={&JS.navigate(~p"/admin/prescriptions/#{&1}")}>
-    <:col :let={prescription} label="Detail">{prescription.detail}</:col>
-    <:col :let={prescription} label="Practitioner">{prescription.practitioner |> Recemedtest.Practitioners.Practitioner.full_name()}</:col>
-    <:col :let={prescription} label="Patient">{prescription.patient |> Recemedtest.Patients.Patient.full_name()}</:col>
-    <:action :let={prescription}>
-      <div class="sr-only">
-        <.link navigate={~p"/admin/prescriptions/#{prescription}"}>Show</.link>
-      </div>
-    </:action>
-  </.table>
+  <div class="h-[500px] overflow-y-auto w-full">
+    <Flop.Phoenix.table id="prescriptions" items={@prescriptions} meta={@meta} path={~p"/admin/prescriptions"} row_click={&JS.navigate(~p"/admin/prescriptions/#{&1}")}
+      opts={[
+        container_attrs: [
+          class: "relative border border-gray-200 rounded-lg"
+        ],
+        table_attrs: [
+          class: "min-w-full bg-white divide-y divide-gray-200 table-auto"
+        ],
+        thead_attrs: [
+          class: "bg-gray-50 sticky top-0 z-10 text-black"
+        ],
+        tbody_attrs: [
+          class: "divide-y divide-gray-100"
+        ],
+        tbody_tr_attrs: [
+          class: "hover:bg-gray-100 cursor-pointer"
+        ],
+        tbody_td_attrs: [
+          class: "text-center text-sm text-gray-700 p-2"
+        ]
+      ]}
+      >
+      <:col :let={prescription} label="Detail">{prescription.detail}</:col>
+      <:col :let={prescription} label="Practitioner" field={:practitioner_first_name}>{prescription.practitioner |> Recemedtest.Practitioners.Practitioner.full_name()}</:col>
+      <:col :let={prescription} label="Patient" field={:patient_first_name}>{prescription.patient |> Recemedtest.Patients.Patient.full_name()}</:col>
+      <:action :let={prescription}>
+        <div class="sr-only">
+          <.link navigate={~p"/admin/prescriptions/#{prescription}"}>Show</.link>
+        </div>
+      </:action>
+    </Flop.Phoenix.table>
+  </div>
+
+
+  <div class="flex justify-center items-center">
+    <Flop.Phoenix.pagination meta={@meta} path={~p"/admin/prescriptions"}
+      class="flex gap-5"
+      page_link_aria_label_fun={&"#{&1}ページ目へ"}
+      page_links={5}
+      page_list_attrs={[class: "flex gap-1"]}
+      page_list_item_attrs={[class: "pagination-item"]}
+      page_link_attrs={[class: "pagination-link"]}
+      current_page_link_attrs={[class: "pagination-link is-current"]}
+      disabled_link_attrs={[class: "is-disabled"]}
+      >
+      <:previous attrs={[class: "pagination-previous"]}>
+        Previous
+      </:previous>
+      <:next attrs={[class: "pagination-next"]}>
+        Next
+      </:next>
+      <:ellipsis>
+        <span class="pagination-ellipsis" aria-hidden="true">&hellip;</span>
+      </:ellipsis>
+    </Flop.Phoenix.pagination>
+  </div>
 </Layouts.app>

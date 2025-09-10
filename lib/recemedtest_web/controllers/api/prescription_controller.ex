@@ -8,7 +8,7 @@ defmodule RecemedtestWeb.Api.PrescriptionController do
   action_fallback RecemedtestWeb.FallbackController
 
   def index(conn, _params) do
-    prescriptions = Prescriptions.list_prescriptions()
+    { prescriptions, _meta } = Prescriptions.list_prescriptions()
     render(conn, :index, prescriptions: prescriptions)
   end
 
