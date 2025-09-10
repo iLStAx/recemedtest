@@ -4,8 +4,8 @@ defmodule RecemedtestWeb.Admin.PractitionerControllerTest do
   import Recemedtest.PractitionersFixtures
   import Recemedtest.AccountsFixtures
 
-  @create_attrs %{first_name: "some first_name", last_name: "some last_name", phone: "some phone", birthdate: ~D[2025-09-07], email: "some email"}
-  @update_attrs %{first_name: "some updated first_name", last_name: "some updated last_name", phone: "some updated phone", birthdate: ~D[2025-09-08], email: "some updated email"}
+  @create_attrs %{first_name: "First Name", last_name: "Last Name", phone: "+56988888888", birthdate: ~D[2025-09-07], email: "example@gmail.com"}
+  @update_attrs %{first_name: "Updated Name", last_name: "Updated Last Name", phone: "+56999999999", birthdate: ~D[2025-09-08], email: "updated@gmail.com"}
   @invalid_attrs %{first_name: nil, last_name: nil, phone: nil, birthdate: nil, email: nil}
 
   setup %{conn: conn} do
@@ -62,7 +62,7 @@ defmodule RecemedtestWeb.Admin.PractitionerControllerTest do
       assert redirected_to(conn) == ~p"/admin/practitioners/#{practitioner}"
 
       conn = get(conn, ~p"/admin/practitioners/#{practitioner}")
-      assert html_response(conn, 200) =~ "some updated first_name"
+      assert html_response(conn, 200) =~ "Updated Name"
     end
 
     test "renders errors when data is invalid", %{conn: conn, practitioner: practitioner} do
@@ -78,9 +78,8 @@ defmodule RecemedtestWeb.Admin.PractitionerControllerTest do
       conn = delete(conn, ~p"/admin/practitioners/#{practitioner}")
       assert redirected_to(conn) == ~p"/admin/practitioners"
 
-      assert_error_sent 404, fn ->
-        get(conn, ~p"/admin/practitioners/#{practitioner}")
-      end
+      conn = get(conn, ~p"/admin/practitioners/#{practitioner}")
+      assert html_response(conn, 404)
     end
   end
 

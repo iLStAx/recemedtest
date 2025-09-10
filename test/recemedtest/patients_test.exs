@@ -12,7 +12,8 @@ defmodule Recemedtest.PatientsTest do
 
     test "list_patients/0 returns all patients" do
       patient = patient_fixture()
-      assert Patients.list_patients() == [patient]
+      { patients, _meta } = Patients.list_patients()
+      assert patients == [patient]
     end
 
     test "get_patient!/1 returns the patient with given id" do
@@ -21,14 +22,14 @@ defmodule Recemedtest.PatientsTest do
     end
 
     test "create_patient/1 with valid data creates a patient" do
-      valid_attrs = %{first_name: "some first_name", last_name: "some last_name", phone: "some phone", birthdate: ~D[2025-09-07], email: "some email"}
+      valid_attrs = %{first_name: "First Name", last_name: "Last Name", phone: "+56999999999", birthdate: ~D[2025-09-07], email: "example@gmail.com"}
 
       assert {:ok, %Patient{} = patient} = Patients.create_patient(valid_attrs)
-      assert patient.first_name == "some first_name"
-      assert patient.last_name == "some last_name"
-      assert patient.phone == "some phone"
+      assert patient.first_name == "First Name"
+      assert patient.last_name == "Last Name"
+      assert patient.phone == "+56999999999"
       assert patient.birthdate == ~D[2025-09-07]
-      assert patient.email == "some email"
+      assert patient.email == "example@gmail.com"
     end
 
     test "create_patient/1 with invalid data returns error changeset" do
@@ -37,14 +38,14 @@ defmodule Recemedtest.PatientsTest do
 
     test "update_patient/2 with valid data updates the patient" do
       patient = patient_fixture()
-      update_attrs = %{first_name: "some updated first_name", last_name: "some updated last_name", phone: "some updated phone", birthdate: ~D[2025-09-08], email: "some updated email"}
+      update_attrs = %{first_name: "Updated Name", last_name: "Updated Last Name", phone: "+56988888888", birthdate: ~D[2025-09-08], email: "updated@gmail.com"}
 
       assert {:ok, %Patient{} = patient} = Patients.update_patient(patient, update_attrs)
-      assert patient.first_name == "some updated first_name"
-      assert patient.last_name == "some updated last_name"
-      assert patient.phone == "some updated phone"
+      assert patient.first_name == "Updated Name"
+      assert patient.last_name == "Updated Last Name"
+      assert patient.phone == "+56988888888"
       assert patient.birthdate == ~D[2025-09-08]
-      assert patient.email == "some updated email"
+      assert patient.email == "updated@gmail.com"
     end
 
     test "update_patient/2 with invalid data returns error changeset" do

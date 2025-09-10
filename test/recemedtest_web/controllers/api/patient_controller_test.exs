@@ -5,18 +5,18 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
   alias Recemedtest.Patients.Patient
 
   @create_attrs %{
-    first_name: "some first_name",
-    last_name: "some last_name",
-    phone: "some phone",
+    first_name: "First Name",
+    last_name: "Last Name",
+    phone: "+56999999999",
     birthdate: ~D[2025-09-08],
-    email: "some email"
+    email: "example@gmail.com"
   }
   @update_attrs %{
-    first_name: "some updated first_name",
-    last_name: "some updated last_name",
-    phone: "some updated phone",
+    first_name: "Updated Name",
+    last_name: "Updated Last Name",
+    phone: "+56988888888",
     birthdate: ~D[2025-09-09],
-    email: "some updated email"
+    email: "updated@gmail.com"
   }
   @invalid_attrs %{first_name: nil, last_name: nil, phone: nil, birthdate: nil, email: nil}
 
@@ -28,30 +28,30 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
 
   describe "index" do
     test "lists all patients", %{conn: conn} do
-      conn = get(conn, ~p"/api/api/patients")
+      conn = get(conn, ~p"/api/patients")
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create patient" do
     test "renders patient when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/api/api/patients", patient: @create_attrs)
+      conn = post(conn, ~p"/api/patients", patient: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, ~p"/api/api/patients/#{id}")
+      conn = get(conn, ~p"/api/patients/#{id}")
 
       assert %{
                "id" => ^id,
                "birthdate" => "2025-09-08",
-               "email" => "some email",
-               "first_name" => "some first_name",
-               "last_name" => "some last_name",
-               "phone" => "some phone"
+               "email" => "example@gmail.com",
+               "first_name" => "First Name",
+               "last_name" => "Last Name",
+               "phone" => "+56999999999"
              } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, ~p"/api/api/patients", patient: @invalid_attrs)
+      conn = post(conn, ~p"/api/patients", patient: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -60,23 +60,23 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
     setup [:create_patient]
 
     test "renders patient when data is valid", %{conn: conn, patient: %Patient{id: id} = patient} do
-      conn = put(conn, ~p"/api/api/patients/#{patient}", patient: @update_attrs)
+      conn = put(conn, ~p"/api/patients/#{patient}", patient: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get(conn, ~p"/api/api/patients/#{id}")
+      conn = get(conn, ~p"/api/patients/#{id}")
 
       assert %{
                "id" => ^id,
                "birthdate" => "2025-09-09",
-               "email" => "some updated email",
-               "first_name" => "some updated first_name",
-               "last_name" => "some updated last_name",
-               "phone" => "some updated phone"
+               "email" => "updated@gmail.com",
+               "first_name" => "Updated Name",
+               "last_name" => "Updated Last Name",
+               "phone" => "+56988888888"
              } = json_response(conn, 200)["data"]
     end
 
     test "renders errors when data is invalid", %{conn: conn, patient: patient} do
-      conn = put(conn, ~p"/api/api/patients/#{patient}", patient: @invalid_attrs)
+      conn = put(conn, ~p"/api/patients/#{patient}", patient: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -85,17 +85,16 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
     setup [:create_patient]
 
     test "deletes chosen patient", %{conn: conn, patient: patient} do
-      conn = delete(conn, ~p"/api/api/patients/#{patient}")
+      conn = delete(conn, ~p"/api/patients/#{patient}")
       assert response(conn, 204)
 
-      assert_error_sent 404, fn ->
-        get(conn, ~p"/api/api/patients/#{patient}")
-      end
+      conn = get(conn, ~p"/api/patients/#{patient}")
+      assert response(conn, 404)
     end
   end
 
-  defp create_patient(%{scope: scope}) do
-    patient = patient_fixture(scope)
+  defp create_patient(_context) do
+    patient = patient_fixture()
 
     %{patient: patient}
   end

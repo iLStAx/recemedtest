@@ -12,7 +12,8 @@ defmodule Recemedtest.PractitionersTest do
 
     test "list_practitioners/0 returns all practitioners" do
       practitioner = practitioner_fixture()
-      assert Practitioners.list_practitioners() == [practitioner]
+      { practitioners, _meta } = Practitioners.list_practitioners()
+      assert  practitioners == [practitioner]
     end
 
     test "get_practitioner!/1 returns the practitioner with given id" do
@@ -21,14 +22,14 @@ defmodule Recemedtest.PractitionersTest do
     end
 
     test "create_practitioner/1 with valid data creates a practitioner" do
-      valid_attrs = %{first_name: "some first_name", last_name: "some last_name", phone: "some phone", birthdate: ~D[2025-09-07], email: "some email"}
+      valid_attrs = %{first_name: "Marco", last_name: "Salinas", phone: "+56999999999", birthdate: ~D[2025-09-07], email: "example@gmail.com"}
 
       assert {:ok, %Practitioner{} = practitioner} = Practitioners.create_practitioner(valid_attrs)
-      assert practitioner.first_name == "some first_name"
-      assert practitioner.last_name == "some last_name"
-      assert practitioner.phone == "some phone"
+      assert practitioner.first_name == "Marco"
+      assert practitioner.last_name == "Salinas"
+      assert practitioner.phone == "+56999999999"
       assert practitioner.birthdate == ~D[2025-09-07]
-      assert practitioner.email == "some email"
+      assert practitioner.email == "example@gmail.com"
     end
 
     test "create_practitioner/1 with invalid data returns error changeset" do
@@ -37,14 +38,14 @@ defmodule Recemedtest.PractitionersTest do
 
     test "update_practitioner/2 with valid data updates the practitioner" do
       practitioner = practitioner_fixture()
-      update_attrs = %{first_name: "some updated first_name", last_name: "some updated last_name", phone: "some updated phone", birthdate: ~D[2025-09-08], email: "some updated email"}
+      update_attrs = %{first_name: "Updated Name", last_name: "Updated Last Name", phone: "+56988888888", birthdate: ~D[2025-09-08], email: "updated@gmail.com"}
 
       assert {:ok, %Practitioner{} = practitioner} = Practitioners.update_practitioner(practitioner, update_attrs)
-      assert practitioner.first_name == "some updated first_name"
-      assert practitioner.last_name == "some updated last_name"
-      assert practitioner.phone == "some updated phone"
+      assert practitioner.first_name == "Updated Name"
+      assert practitioner.last_name == "Updated Last Name"
+      assert practitioner.phone == "+56988888888"
       assert practitioner.birthdate == ~D[2025-09-08]
-      assert practitioner.email == "some updated email"
+      assert practitioner.email == "updated@gmail.com"
     end
 
     test "update_practitioner/2 with invalid data returns error changeset" do
