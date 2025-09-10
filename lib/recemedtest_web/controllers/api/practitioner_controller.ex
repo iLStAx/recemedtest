@@ -7,7 +7,7 @@ defmodule RecemedtestWeb.Api.PractitionerController do
   action_fallback RecemedtestWeb.FallbackController
 
   def index(conn, params) do
-    practitioners = Practitioners.list_practitioners(params)
+    { practitioners, _meta } = Practitioners.list_practitioners(params)
     render(conn, :index, practitioners: practitioners)
   end
 
