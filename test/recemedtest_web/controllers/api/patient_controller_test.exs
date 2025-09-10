@@ -2,6 +2,7 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
   use RecemedtestWeb.ConnCase
 
   import Recemedtest.PatientsFixtures
+  import Recemedtest.PrescriptionsFixtures
   alias Recemedtest.Patients.Patient
 
   @create_attrs %{
@@ -90,6 +91,18 @@ defmodule RecemedtestWeb.Api.PatientControllerTest do
 
       conn = get(conn, ~p"/api/patients/#{patient}")
       assert response(conn, 404)
+    end
+
+    test "deletes chosen patient with his prescriptions", %{conn: conn, patient: patient} do
+      prescription = prescription_by_patient(patient)
+      assert prescription
+      conn = delete(conn, ~p"/api/patients/#{patient}")
+      assert response(conn, 204)
+
+      conn = get(conn, ~p"/api/patients/#{patient}")
+      assert response(conn, 404)
+
+      assert Recemedtest.Repo.get(Recemedtest.Prescriptions.Prescription, prescription.id) == nil
     end
   end
 

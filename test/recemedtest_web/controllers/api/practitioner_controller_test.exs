@@ -2,6 +2,7 @@ defmodule RecemedtestWeb.Api.PractitionerControllerTest do
   use RecemedtestWeb.ConnCase
 
   import Recemedtest.PractitionersFixtures
+  import Recemedtest.PrescriptionsFixtures
   alias Recemedtest.Practitioners.Practitioner
 
   @create_attrs %{
@@ -90,6 +91,18 @@ defmodule RecemedtestWeb.Api.PractitionerControllerTest do
 
       conn = get(conn, ~p"/api/practitioners/#{practitioner}")
       assert response(conn, 404)
+    end
+
+    test "deletes chosen practitioner with his prescriptions", %{conn: conn, practitioner: practitioner} do
+      prescription = prescription_by_practitioner(practitioner)
+      assert prescription
+      conn = delete(conn, ~p"/api/practitioners/#{practitioner}")
+      assert response(conn, 204)
+
+      conn = get(conn, ~p"/api/practitioners/#{practitioner}")
+      assert response(conn, 404)
+
+      assert Recemedtest.Repo.get(Recemedtest.Prescriptions.Prescription, prescription.id) == nil
     end
   end
 

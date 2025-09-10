@@ -42,3 +42,10 @@ Accounts.register_user_available_to_login(%{
     * mix phx.gen.json Practitioner practitioners first_name:string last_name:string phone:string birthdate:date email:string --no-context --no-schema --no-html --web api
 * Recetas
     * mix phx.gen.json Prescription prescriptions detail:text practitioner_id:references:practitioners patient_id:references:patients --no-context --no-schema --no-html --web api
+
+## Test
+verificar la eliminación de las prestaciones vinculadas al paciente
+mix test/recemedtest_web/controllers/api/patient_controller_test.exs:96
+
+verificar la eliminación de las prestaciones vinculadas al doctor
+mix test test/recemedtest_web/controllers/api/practitioner_controller_test.exs:96
