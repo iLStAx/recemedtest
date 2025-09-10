@@ -1,8 +1,0 @@
-<Layouts.app flash={@flash} current_scope={@current_scope}>
-  <.header>
-    New Practitioner
-    <:subtitle>Use this form to manage practitioner records in your database.</:subtitle>
-  </.header>
-
-  <.practitioner_form changeset={@changeset} action={~p"/api/practitioners"} return_to={~p"/api/practitioners"} />
-</Layouts.app>
