@@ -56,8 +56,13 @@ defmodule Recemedtest.Prescriptions do
       [%Prescription{}, ...]
 
   """
-  def list_prescriptions do
-    Repo.all(Prescription) |> Repo.preload([:practitioner, :patient])
+  def list_prescriptions(params \\ %{}) do
+    Prescription
+      |> join(:left, [o], p in assoc(o, :patient), as: :patient)
+      |> preload([patient: p], [patient: p])
+      |> join(:left, [o], p in assoc(o, :practitioner), as: :practitioner)
+      |> preload([practitioner: p], [practitioner: p])
+      |> Flop.validate_and_run!(params, for: Prescription, replace_invalid_params: true)
   end
 
   @doc """
