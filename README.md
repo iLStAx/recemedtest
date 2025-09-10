@@ -1,4 +1,4 @@
-git a## Instalación en macOS
+## Instalación en macOS
 
 * Elixir y Erlang: brew install elixir
 * Phoenix: mix archive.install hex phx_new
