@@ -80,7 +80,7 @@ defmodule Recemedtest.Patients do
       [%Patient{}, ...]
 
   """
-  def list_patients(params) do
+  def list_patients(params \\ %{}) do
     Flop.validate_and_run!(Patient, params, for: Patient, replace_invalid_params: true)
   end
 
