@@ -16,24 +16,65 @@
     <button type="submit">Filtrar</button>
   </.form>
 
-  <Flop.Phoenix.table id="patients" items={@patients} meta={@meta} path={~p"/admin/patients"} row_click={&JS.navigate(~p"/admin/patients/#{&1}")}>
-    <:col :let={patient} label="First Name" field={:first_name}>{patient.first_name}</:col>
-    <:col :let={patient} label="Last Name" field={:last_name}>{patient.last_name}</:col>
-    <:col :let={patient} label="Phone">{patient.phone}</:col>
-    <:col :let={patient} label="Birthdate">{patient.birthdate}</:col>
-    <:col :let={patient} label="Email">{patient.email}</:col>
-    <:action :let={patient}>
-      <div class="sr-only">
-        <.link navigate={~p"/admin/patients/#{patient}"}>Show</.link>
-      </div>
-      <.link navigate={~p"/admin/patients/#{patient}/edit"}>Edit</.link>
-    </:action>
-    <:action :let={patient}>
-      <.link href={~p"/admin/patients/#{patient}"} method="delete" data-confirm="Are you sure?">
-        Delete
-      </.link>
-    </:action>
-  </Flop.Phoenix.table>
+  <div class="h-90 overflow-y-auto w-full">
+    <Flop.Phoenix.table id="patients" items={@patients} meta={@meta} path={~p"/admin/patients"} row_click={&JS.navigate(~p"/admin/patients/#{&1}")}
+      opts={[
+        container_attrs: [
+          class: "relative border border-gray-200 rounded-lg"
+        ],
+        table_attrs: [
+          class: "min-w-full bg-white divide-y divide-gray-200 table-auto"
+        ],
+        thead_attrs: [
+          class: "bg-gray-50 sticky top-0 z-10 text-black"
+        ],
+        tbody_attrs: [
+          class: "divide-y divide-gray-100"
+        ],
+        tbody_tr_attrs: [
+          class: "hover:bg-gray-100 cursor-pointer"
+        ],
+        tbody_td_attrs: [
+          class: "text-center text-sm text-gray-700"
+        ]
+      ]}
+      >
+      <:col :let={patient} label="First Name" field={:first_name}>{patient.first_name}</:col>
+      <:col :let={patient} label="Last Name" field={:last_name}>{patient.last_name}</:col>
+      <:col :let={patient} label="Phone">{patient.phone}</:col>
+      <:col :let={patient} label="Birthdate">{patient.birthdate}</:col>
+      <:col :let={patient} label="Email">{patient.email}</:col>
+      <:action :let={patient} tbody_td_attrs={[class: "bg-indigo-500 text-white-500 rounded-full p-1"]}>
+        <.link navigate={~p"/admin/patients/#{patient}/edit"} class="flex justify-center">Edit</.link>
+      </:action>
+      <:action :let={patient} tbody_td_attrs={[class: "bg-red-500 text-white-500 rounded-full"]}>
+        <.link href={~p"/admin/patients/#{patient}"} method="delete" data-confirm="Are you sure?" class="flex justify-center">
+          Delete
+        </.link>
+      </:action>
+    </Flop.Phoenix.table>
+  </div>
 
-  <Flop.Phoenix.pagination meta={@meta} path={~p"/admin/patients"} />
+  <div class="flex justify-center items-center">
+    <Flop.Phoenix.pagination meta={@meta} path={~p"/admin/patients"}
+      class="flex gap-5"
+      page_link_aria_label_fun={&"#{&1}ページ目へ"}
+      page_links={5}
+      page_list_attrs={[class: "flex gap-1"]}
+      page_list_item_attrs={[class: "pagination-item"]}
+      page_link_attrs={[class: "pagination-link"]}
+      current_page_link_attrs={[class: "pagination-link is-current"]}
+      disabled_link_attrs={[class: "is-disabled"]}
+      >
+      <:previous attrs={[class: "pagination-previous"]}>
+        Previous
+      </:previous>
+      <:next attrs={[class: "pagination-next"]}>
+        Next
+      </:next>
+      <:ellipsis>
+        <span class="pagination-ellipsis" aria-hidden="true">&hellip;</span>
+      </:ellipsis>
+    </Flop.Phoenix.pagination>
+  </div>
 </Layouts.app>
