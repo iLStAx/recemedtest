@@ -1,4 +1,4 @@
-## Instalación en macOS
+git a## Instalación en macOS
 
 * Elixir y Erlang: brew install elixir
 * Phoenix: mix archive.install hex phx_new
@@ -10,9 +10,9 @@
 ## Generación de datos
 en consola  `iex -S mix` ejecutar lo siguiente:
 
-* Recemedtest.Patients.loader -> Inserta 100 pacientes en la base de datos
-* Recemedtest.Practitioners.loader -> Inserta 100 médicos en la base de datos
-* Recemedtest.Prescriptions.loader -> Inserta 100 prescripciones en la base de datos
+* Recemedtest.Patients.loader\0 -> Inserta 100 pacientes en la base de datos
+* Recemedtest.Practitioners.loader\0 -> Inserta 100 médicos en la base de datos
+* Recemedtest.Prescriptions.loader\0 -> Inserta 100 prescripciones en la base de datos
 
 ## Generadores utilizados
 
